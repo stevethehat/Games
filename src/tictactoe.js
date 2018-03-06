@@ -9,11 +9,11 @@ class TicTacTow extends React.Component {
             'a': 'b'
         }
     }
-    handleClick(){
-        alert('handle click');
+    handleClick(row, col){
+        alert('handle click ' + row + ' ' + col);
     }
     getLabel(row, col){
-        return (row *3) + col;
+        return "";
     }
     render(){
         return (
