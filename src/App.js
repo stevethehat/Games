@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Game from './game';
+import TicTacToe from './tictactoe';
+import Sudoku from './sudoku';
 import logo from './logo.svg';
 import './App.css';
 
@@ -11,7 +12,8 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React.. it should be fun!!!</h1>
         </header>
-        <Game/>
+        <TicTacToe/>
+        <Sudoku/>
       </div>
     );
   }

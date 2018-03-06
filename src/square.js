@@ -1,11 +1,17 @@
 
-import React, { Component } from 'react';
+import React from 'react';
 
 class Square extends React.Component {
     render(){
-        return (
-            <button onClick={this.props.onClick}>{this.props.value}</button>
-        )
+        if(this.props.value !== ""){
+            return (
+                <button onClick={this.props.onClick}>{this.props.value}</button>
+            )    
+        } else {
+            return (
+                <button onClick={this.props.onClick}>&nbsp;</button>
+            )    
+        }
     }
 }
 
