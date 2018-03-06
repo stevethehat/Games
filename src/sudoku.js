@@ -6,25 +6,44 @@ import Numbers from './numbers'
 class Sudoku extends React.Component {
     constructor(props){
         super(props);
+
+        this.game="400508100200009005075060900000800091109007500730000400820604310013702050900003070";
         this.state = {
-            'currentNum': 0
+            'currentNum': 1,
+            'grid': this.getInitialGrid(this.game)
         }
     }
+    getInitialGrid(game){
+        var grid = [], row;
+        if(game !== undefined){
+            for(row = 0; row < 9;row++){
+                grid.push(Array.from(game.substr(0, 9)));
+                game = game.substr(9);
+            }
+        }
+        return grid;
+    }
     cellClick(row, col){
-        alert('handle click');
+        var grid = this.state.grid.slice();
+        grid[row][col] = String(this.state.currentNum);
+        this.setState(
+            {
+                'currentNum': this.state.currentNum,
+                'grid': grid
+            }
+        );
     }
     numberClick(num){
         this.setState(
             {
-                'currentNum': num
+                'currentNum': num,
+                'grid': this.state.grid
             }
         )
     }
     getLabel(row, col){
-        var pos, label;
-        pos = (row *3) + col;
-        label = (this.game[pos] === "0") ? "" : this.game[pos];
-        return label;
+        var label = this.state.grid[row][col];
+        return (label === "0") ? "" : label;
     }
     render(){
         const currentNum = this.state.currentNum;
@@ -32,10 +51,8 @@ class Sudoku extends React.Component {
             <div className="sudoku">
                 <h1>Sudoku</h1>
                 <br/>
-                <Board rows="9" cols="9" getLabel={this.getLabel} onClick={this.cellClick}
-                    game="400508100200009005075060900000800091109007500730000400820604310013702050900003070"
-                />
-                <div>
+                <Board rows="9" cols="9" getLabel={(row, col) => this.getLabel(row, col)} onClick={(row, col) => this.cellClick(row, col)}/>
+                <div className="current-number">
                     <b>Current number: {currentNum}</b>
                 </div>
                 {/*
