@@ -12,14 +12,16 @@ class TicTacTow extends React.Component {
     handleClick(row, col){
         alert('handle click ' + row + ' ' + col);
     }
-    getLabel(row, col){
-        return "";
+    getCellInfo(row, col){
+        return {
+            'label': ''
+        };
     }
     render(){
         return (
             <div>
                 <h1>Tic Tac Toe</h1>
-                <Board rows="3" cols="3" getLabel={this.getLabel} onClick={this.handleClick}/>
+                <Board rows="3" cols="3" getCellInfo={(row, col) => this.getCellInfo(row, col)} onClick={this.handleClick}/>
             </div>
         )
     }

@@ -4,22 +4,25 @@ import Square from './square'
 
 class Board extends React.Component {
     render(){
-        var rowI, colI, rowCells, rows, board;
+        var row, col, rowCells, rows, board, cellInfo;
         rows = []
-        for(rowI = 0;rowI < this.props.rows;rowI++){
+        for(row = 0;row < this.props.rows;row++){
             rowCells = [];
-            for(colI = 0;colI < this.props.cols;colI++){
+            for(col = 0;col < this.props.cols;col++){
+                cellInfo = this.props.getCellInfo(row, col);
                 rowCells.push(
                     {
-                        'label': this.props.getLabel(rowI, colI),
-                        'row': rowI,
-                        'col': colI
+                        'label': cellInfo.label,
+                        'row': row,
+                        'col': col,
+                        'class': cellInfo.class
                     }
                 );
+                //debugger;
             }
 
             rows.push(rowCells.map((cell, i) => {
-                return <Square key={i} value={cell.label} onClick={() => this.props.onClick(cell.row, cell.col)}/>
+                return <Square className={cell.class} key={i} value={cell.label} onClick={() => this.props.onClick(cell.row, cell.col)}/>
             }));
         }
 

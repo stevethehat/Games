@@ -41,9 +41,36 @@ class Sudoku extends React.Component {
             }
         )
     }
-    getLabel(row, col){
-        var label = this.state.grid[row][col];
-        return (label === "0") ? "" : label;
+    getCellInfo(row, col){
+        var label, cssClass = 'cell-light', rowGroup, colGroup;
+        label = this.state.grid[row][col];
+
+        switch(row){
+            case 0: case 1: case 2: case 6: case 7: case 8:
+                switch(col){
+                    case 0: case 1: case 2: case 6: case 7: case 8:
+                        cssClass = 'cell-dark';
+                        break;
+                    default:
+                        cssClass = 'cell-light';
+                        break;
+                }
+                break;
+            default:
+                switch(col){
+                    case 0: case 1: case 2: case 6: case 7: case 8:
+                        cssClass = 'cell-light';
+                        break;
+                    default:
+                        cssClass = 'cell-dark';
+                    break;
+                }
+                break;
+        }
+        return {
+            'label': (label === "0") ? "" : label,
+            'class': cssClass
+        }
     }
     render(){
         const currentNum = this.state.currentNum;
@@ -51,15 +78,11 @@ class Sudoku extends React.Component {
             <div className="sudoku">
                 <h1>Sudoku</h1>
                 <br/>
-                <Board rows="9" cols="9" getLabel={(row, col) => this.getLabel(row, col)} onClick={(row, col) => this.cellClick(row, col)}/>
+                <Board rows="9" cols="9" getCellInfo={(row, col) => this.getCellInfo(row, col)} onClick={(row, col) => this.cellClick(row, col)}/>
                 <div className="current-number">
                     <b>Current number: {currentNum}</b>
                 </div>
-                {/*
-                have to use the one below to pass num through
-                <Numbers onClick={() => this.numberClick()}/>
-                */}
-                <Numbers onClick={num => this.numberClick(num)}/>
+                <Numbers from="1" to="9" onClick={num => this.numberClick(num)}/>
             </div>
         )
     }

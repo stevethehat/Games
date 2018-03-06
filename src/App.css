@@ -35,3 +35,9 @@ button{
   padding-top: 10px;
   padding-bottom: 10px;
 }
+.cell-light{
+
+}
+.cell-dark{
+  background-color: rgba(0,0,0,0.1);
+}

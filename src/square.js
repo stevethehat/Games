@@ -5,11 +5,11 @@ class Square extends React.Component {
     render(){
         if(this.props.value !== ""){
             return (
-                <button onClick={this.props.onClick}>{this.props.value}</button>
+                <button className={this.props.className} onClick={this.props.onClick}>{this.props.value}</button>
             )    
         } else {
             return (
-                <button onClick={this.props.onClick}>&nbsp;</button>
+                <button className={this.props.className} onClick={this.props.onClick}>&nbsp;</button>
             )    
         }
     }
