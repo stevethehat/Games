@@ -5,12 +5,10 @@ import Square from './square'
 class Board extends React.Component {
     render(){
         var rowI, colI, rowLabels, rows, board;
-        //const board = 
         rows = []
         for(rowI = 0;rowI < this.props.rows;rowI++){
             rowLabels = [];
             for(colI = 0;colI < this.props.cols;colI++){
-                //rowLabels.push((rowI * 3) + colI);
                 rowLabels.push(this.props.getLabel(rowI, colI));
             }
 
@@ -19,20 +17,9 @@ class Board extends React.Component {
             }));
         }
 
-        board = rows.map((row, i) => {
-                return(
-                    <div>
-                        {row}
-                    </div>
-                )
-            }
-        )
+        board = rows.map((row, i) => <div>{row}</div>);
 
-        return (
-            <div>
-                {board}
-            </div>
-        )
+        return <div>{board}</div>
     }
 }
 
