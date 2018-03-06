@@ -31,7 +31,7 @@ button{
   width: 40px;
   height: 40px;
 }
-
-.horizontal{
-  float:left;
+.current-number{
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
