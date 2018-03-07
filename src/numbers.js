@@ -4,14 +4,18 @@ import Square from './square';
 
 class Numbers extends React.Component {
     render(){
-        const numbers = [0,1,2,3,4,5,6,7,8,9].map((value, i) => {
+        var numbers = [], num;
+        for(num = Number(this.props.from); num <= Number(this.props.to);num++){
+            numbers.push(num);
+        }
+        const numbersJSX = numbers.map((value, i) => {
             return(
                 <Square key={value} value={value} onClick={() => this.props.onClick(value)}/>
             )
         })
         ;
         return(
-                <div>{numbers}</div>
+            <div>{numbersJSX}<Square key="none" value="Clear" onClick={() => this.props.onClick('none')}/></div>
         )
     }
 }
