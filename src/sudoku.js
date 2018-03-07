@@ -32,6 +32,20 @@ class Sudoku extends React.Component {
                 'grid': grid
             }
         );
+        this.legalClick(row, col);        
+    }
+    legalClick(row, col){
+        var sectors;
+        if(this.getRow(row).indexOf(this.state.currentNum) > -1){
+            return false
+        } else if (this.getColumn(col).indexOf(this.state.currentNum) > -1){
+            return false;
+        } else {
+            // do the sectors
+            debugger;
+            sectors = this.getSectors();
+            return false
+        }
     }
     numberClick(num){
         this.setState(
@@ -41,8 +55,60 @@ class Sudoku extends React.Component {
             }
         )
     }
+    getLegalNums(){
+
+    }
+    getColumn(col){
+        return this.state.grid.map((row, i) => row[col]);
+    }
+    getRow(row){
+        return this.state.grid[row];
+    }
+    getSector(row, col){
+        // top row
+        if(row <= 2 && col <= 2){
+            return 0;
+        }
+        if(row <= 2 && (col > 2 && col <= 5)){
+            return 1;
+        }
+        if(row <= 2 && col > 5){
+            return 2;
+        }
+        // middle row
+        if((row > 2 && row <= 5) && col <= 2){
+            return 3;
+        }
+        if((row > 2 && row <= 5) && (col > 2 && col <= 5)){
+            return 4;
+        }
+        if((row > 2 && row <= 5) && col > 5){
+            return 5;
+        }
+        // bottom row
+        if(row > 5 && col <= 2){
+            return 6;
+        }
+        if(row > 5 && (col > 2 && col <= 5)){
+            return 7;
+        }
+        if(row > 5 && col > 5){
+            return 8;
+        }        
+    }
+    getSectors(){
+        var row, col, cell, sector, sectors = [[],[],[],[],[],[],[],[],[]];
+        for(row = 0;row < 9;row++){
+            for(col = 0;col < 9;col++){
+                cell = this.state.grid[row][col];
+                sector = this.getSector(row, cell);
+                sectors[sector].push(cell);
+            }
+        }
+        return sectors;
+    }
     getCellInfo(row, col){
-        var label, cssClass = 'cell-light', rowGroup, colGroup;
+        var label, cssClass = 'cell-light';
         label = this.state.grid[row][col];
 
         switch(row){
