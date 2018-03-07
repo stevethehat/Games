@@ -1,9 +1,10 @@
 import React from 'react';
 
-class SudokuUtil {
+export class SudokuUtil {
     constructor(grid){
         this.grid = grid;
     }
+
     // 4 5 8 1 7 3 2 1 4 2 7 5
     // 1 2 3 4 5 7 8 = 6 9
     getAvailableNums(row, col){
@@ -16,23 +17,23 @@ class SudokuUtil {
         
         return availableNums;
     }    
-    legalClick(row, col, currentNum){
+    checkGo(row, col, currentNum){
         var sectors;
 
         if(this.getRow(row).indexOf(currentNum) > -1){
-            return false
+            return checkGoResult.rowError;
         } else if (this.getColumn(col).indexOf(currentNum) > -1){
-            return false;
+            return checkGoResult.colError;
         } else {
             // do the sectors
             sectors = this.getSectors();
             sectors.forEach(function(sector){
                 if(sector.indexOf(currentNum) > -1){
-                    return false;
+                    return checkGoResult.sectorError;
                 }
             });
         }
-        return true;
+        return checkGoResult.ok;
     }  
     getColumn(col){
         // no need for the zeros
@@ -87,7 +88,30 @@ class SudokuUtil {
             }
         }
         return sectors;
-    }      
+    }  
+    
+    static getInitialGrid(game){
+        var grid = [], row, cells;
+        if(game !== undefined){
+            for(row = 0; row < 9;row++){
+                // this will be an array of strings
+                cells = Array.from(game.substr(0, 9));
+                // convert to ints
+                cells = cells.map((cell, i) => Number(cell))
+                grid.push(cells);
+                game = game.substr(9);
+            }
+        }
+        return grid;
+    }
 }
 
-export default SudokuUtil;
+export const checkGoResult = {
+    ok: 0,
+    rowError: 1,
+    colError: 2,
+    sectorError: 3
+}
+
+//export default SudokuUtil;
+//export {SudokuUtil};
