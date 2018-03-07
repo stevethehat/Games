@@ -14,10 +14,14 @@ class Sudoku extends React.Component {
         }
     }
     getInitialGrid(game){
-        var grid = [], row;
+        var grid = [], row, cells;
         if(game !== undefined){
             for(row = 0; row < 9;row++){
-                grid.push(Array.from(game.substr(0, 9)));
+                // this will be an array of strings
+                cells = Array.from(game.substr(0, 9));
+                // convert to ints
+                cells = cells.map((cell, i) => Number(cell))
+                grid.push(cells);
                 game = game.substr(9);
             }
         }
@@ -25,27 +29,36 @@ class Sudoku extends React.Component {
     }
     cellClick(row, col){
         var grid = this.state.grid.slice();
-        grid[row][col] = String(this.state.currentNum);
+        if(!this.legalClick(row, col)){
+            console.log('illegal click');
+            return;
+        }
+        grid[row][col] = this.state.currentNum;
         this.setState(
             {
                 'currentNum': this.state.currentNum,
                 'grid': grid
             }
         );
-        this.legalClick(row, col);        
     }
     legalClick(row, col){
-        var sectors;
-        if(this.getRow(row).indexOf(this.state.currentNum) > -1){
+        var sectors,
+            currentNum = this.state.currentNum;
+
+        if(this.getRow(row).indexOf(currentNum) > -1){
             return false
-        } else if (this.getColumn(col).indexOf(this.state.currentNum) > -1){
+        } else if (this.getColumn(col).indexOf(currentNum) > -1){
             return false;
         } else {
             // do the sectors
-            debugger;
             sectors = this.getSectors();
-            return false
+            sectors.forEach(function(sector){
+                if(sector.indexOf(currentNum) > -1){
+                    return false;
+                }
+            });
         }
+        return true;
     }
     numberClick(num){
         this.setState(
@@ -97,12 +110,10 @@ class Sudoku extends React.Component {
         }        
     }
     getSectors(){
-        var row, col, cell, sector, sectors = [[],[],[],[],[],[],[],[],[]];
+        var row, col, sectors = [[],[],[],[],[],[],[],[],[]];
         for(row = 0;row < 9;row++){
             for(col = 0;col < 9;col++){
-                cell = this.state.grid[row][col];
-                sector = this.getSector(row, cell);
-                sectors[sector].push(cell);
+                sectors[this.getSector(row, col)].push(this.state.grid[row][col]);
             }
         }
         return sectors;
@@ -111,30 +122,16 @@ class Sudoku extends React.Component {
         var label, cssClass = 'cell-light';
         label = this.state.grid[row][col];
 
-        switch(row){
-            case 0: case 1: case 2: case 6: case 7: case 8:
-                switch(col){
-                    case 0: case 1: case 2: case 6: case 7: case 8:
-                        cssClass = 'cell-dark';
-                        break;
-                    default:
-                        cssClass = 'cell-light';
-                        break;
-                }
+        switch(this.getSector(row, col)){
+            case 0: case 2: case 4: case 6: case 8:
+                cssClass = 'cell-dark';
                 break;
             default:
-                switch(col){
-                    case 0: case 1: case 2: case 6: case 7: case 8:
-                        cssClass = 'cell-light';
-                        break;
-                    default:
-                        cssClass = 'cell-dark';
-                    break;
-                }
+                cssClass = 'cell-light';
                 break;
         }
         return {
-            'label': (label === "0") ? "" : label,
+            'label': (label === 0) ? "" : label,
             'class': cssClass
         }
     }
