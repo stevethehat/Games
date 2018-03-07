@@ -1,9 +1,10 @@
 
 import React from 'react';
-import Board from './board'
-import Numbers from './numbers'
+import SudokuUtil from './sudokuutil';
+import Board from './board';
+import Numbers from './numbers';
 
-class Sudoku extends React.Component {
+class Sudoku extends SudokuUtil {
     constructor(props){
         super(props);
 
@@ -12,20 +13,6 @@ class Sudoku extends React.Component {
             'currentNum': 1,
             'grid': this.getInitialGrid(this.game)
         }
-    }
-    getInitialGrid(game){
-        var grid = [], row, cells;
-        if(game !== undefined){
-            for(row = 0; row < 9;row++){
-                // this will be an array of strings
-                cells = Array.from(game.substr(0, 9));
-                // convert to ints
-                cells = cells.map((cell, i) => Number(cell))
-                grid.push(cells);
-                game = game.substr(9);
-            }
-        }
-        return grid;
     }
     cellClick(row, col){
         var grid = this.state.grid.slice();
@@ -67,56 +54,6 @@ class Sudoku extends React.Component {
                 'grid': this.state.grid
             }
         )
-    }
-    getLegalNums(){
-
-    }
-    getColumn(col){
-        return this.state.grid.map((row, i) => row[col]);
-    }
-    getRow(row){
-        return this.state.grid[row];
-    }
-    getSector(row, col){
-        // top row
-        if(row <= 2 && col <= 2){
-            return 0;
-        }
-        if(row <= 2 && (col > 2 && col <= 5)){
-            return 1;
-        }
-        if(row <= 2 && col > 5){
-            return 2;
-        }
-        // middle row
-        if((row > 2 && row <= 5) && col <= 2){
-            return 3;
-        }
-        if((row > 2 && row <= 5) && (col > 2 && col <= 5)){
-            return 4;
-        }
-        if((row > 2 && row <= 5) && col > 5){
-            return 5;
-        }
-        // bottom row
-        if(row > 5 && col <= 2){
-            return 6;
-        }
-        if(row > 5 && (col > 2 && col <= 5)){
-            return 7;
-        }
-        if(row > 5 && col > 5){
-            return 8;
-        }        
-    }
-    getSectors(){
-        var row, col, sectors = [[],[],[],[],[],[],[],[],[]];
-        for(row = 0;row < 9;row++){
-            for(col = 0;col < 9;col++){
-                sectors[this.getSector(row, col)].push(this.state.grid[row][col]);
-            }
-        }
-        return sectors;
     }
     getCellInfo(row, col){
         var label, cssClass = 'cell-light';
