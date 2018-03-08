@@ -20,9 +20,13 @@ class Board extends React.Component {
                 );
                 //debugger;
             }
-
             rows.push(rowCells.map((cell, i) => {
-                return <Square className={cell.class} key={i} value={cell.label} onClick={() => this.props.onClick(cell.row, cell.col)}/>
+                var anobj = {
+                    'row': row,
+                    'col': col
+                };
+                //return <Square test={anobj} row={cell.row} col={cell.col} className={cell.class} key={i} avalue={cell.label} onClick={() => this.props.onClick(cell.row, cell.col)}>{cell.label}</Square>
+                return <Square className={cell.class} key={i} avalue={cell.label} onClick={() => this.props.onClick(cell.row, cell.col)}>{cell.label}</Square>
             }));
         }
 

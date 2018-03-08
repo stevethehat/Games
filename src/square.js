@@ -3,9 +3,9 @@ import React from 'react';
 
 class Square extends React.Component {
     render(){
-        if(this.props.value !== ""){
+        if(this.props.children !== ""){
             return (
-                <button className={this.props.className} onClick={this.props.onClick}>{this.props.value}</button>
+                <button className={this.props.className} onClick={this.props.onClick}>{this.props.children}</button>
             )    
         } else {
             return (
