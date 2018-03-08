@@ -18,22 +18,26 @@ export class SudokuUtil {
         return availableNums;
     }    
     checkGo(row, col, currentNum){
-        var sectors;
+        var sector,
+            result = [];
 
         if(this.getRow(row).indexOf(currentNum) > -1){
-            return checkGoResult.rowError;
-        } else if (this.getColumn(col).indexOf(currentNum) > -1){
-            return checkGoResult.colError;
-        } else {
-            // do the sectors
-            sectors = this.getSectors();
-            sectors.forEach(function(sector){
-                if(sector.indexOf(currentNum) > -1){
-                    return checkGoResult.sectorError;
-                }
-            });
+            result.push(checkGoResult.rowError);
         }
-        return checkGoResult.ok;
+        if (this.getColumn(col).indexOf(currentNum) > -1){
+            result.push(checkGoResult.colError);
+        }
+        // do the sectors
+        sector = this.getSector(row, col);
+        if(sector.indexOf(currentNum) > -1){
+            result.push(checkGoResult.sectorError);
+        }
+
+        if(result.length === 0){
+            return checkGoResult.ok;
+        } else {
+            return result;
+        }
     }  
     getColumn(col){
         // no need for the zeros

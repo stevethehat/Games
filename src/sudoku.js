@@ -26,7 +26,7 @@ class Sudoku extends React.Component {
                 lastClick = {'row': row, 'col': col, 'result': checkResult};
 
         if(this.state.currentNum !== 'none'){
-            if(checkResult === checkGoResult.ok){
+            if(checkResult.indexOf(checkGoResult.ok) !== -1){
                 grid[row][col] = this.state.currentNum;                
             }
             this.setState(
@@ -62,7 +62,9 @@ class Sudoku extends React.Component {
     }
     getCellInfo(row, col){
         const util = new SudokuUtil(this.state.grid),
-            label = this.state.grid[row][col];
+            label = this.state.grid[row][col],
+            lastClick = this.state.lastClick;
+
         var cssClass = 'cell-light';
 
         switch(util.getSectorId(row, col)){
@@ -74,21 +76,22 @@ class Sudoku extends React.Component {
                 break;
         }
 
-        if(this.state.lastClick.result !== checkGoResult.ok && this.state.lastClick.result !== checkGoResult.none){
-            debugger;
-            switch(this.state.lastClick.result){
-                case checkGoResult.rowError:
-                    console.log('row error');
-                    break;
-                case checkGoResult.colError:
-                    console.log('col error');
-                    break;
-                case checkGoResult.sectorError:
+        if(lastClick.result !== checkGoResult.ok && lastClick.result !== checkGoResult.none){
+            if(lastClick.result.indexOf(checkGoResult.rowError) !== -1 && lastClick.row === row){
+                console.log(`row error ${row} x ${col}`);
+                cssClass = 'cell-error';
+            }            
+            if(lastClick.result.indexOf(checkGoResult.colError) !== -1 && lastClick.col === col){
+                console.log(`col error ${row} x ${col}`);
+                cssClass = 'cell-error';
+            }            
+            if(lastClick.result.indexOf(checkGoResult.sectorError) !== -1){
+                if(util.getSectorId(row, col) === util.getSectorId(lastClick.row, lastClick.col)){
                     console.log('sector error');
-                    break;
-            }
+                    cssClass = 'cell-error';    
+                }
+            }            
         }
-
         return {
             'label': (label === 0) ? "" : label,
             'class': cssClass
