@@ -107,6 +107,7 @@ export class SudokuUtil {
 }
 
 export const checkGoResult = {
+    none: -1,
     ok: 0,
     rowError: 1,
     colError: 2,

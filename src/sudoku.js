@@ -12,25 +12,23 @@ class Sudoku extends React.Component {
         this.state = {
             'currentNum': 1,
             'mode': 'play',
-            'lastClick': {'row': 0, 'col': 0},
+            'lastClick': {'row': 0, 'col': 0, 'result': checkGoResult.none},
             'grid': SudokuUtil.getInitialGrid(this.game)
         }
     }
     
     cellClick(row, col){
-        var legalNums,
-            grid = this.state.grid.slice();
-        const lastClick = {'row': row, 'col': col},
-                util = new SudokuUtil(grid),
-                checkResult = util.checkGo(row, col, this.state.currentNum);
+        var     legalNums,
+                grid = this.state.grid.slice();
+
+        const   util = new SudokuUtil(grid),
+                checkResult = util.checkGo(row, col, this.state.currentNum),
+                lastClick = {'row': row, 'col': col, 'result': checkResult};
 
         if(this.state.currentNum !== 'none'){
-            debugger;
-            if(checkResult !== checkGoResult.ok){
-                console.log('illegal click');
-                return;
+            if(checkResult === checkGoResult.ok){
+                grid[row][col] = this.state.currentNum;                
             }
-            grid[row][col] = this.state.currentNum;
             this.setState(
                 {
                     'currentNum': this.state.currentNum,
@@ -75,6 +73,22 @@ class Sudoku extends React.Component {
                 cssClass = 'cell-light';
                 break;
         }
+
+        if(this.state.lastClick.result !== checkGoResult.ok && this.state.lastClick.result !== checkGoResult.none){
+            debugger;
+            switch(this.state.lastClick.result){
+                case checkGoResult.rowError:
+                    console.log('row error');
+                    break;
+                case checkGoResult.colError:
+                    console.log('col error');
+                    break;
+                case checkGoResult.sectorError:
+                    console.log('sector error');
+                    break;
+            }
+        }
+
         return {
             'label': (label === 0) ? "" : label,
             'class': cssClass
