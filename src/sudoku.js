@@ -3,12 +3,14 @@ import React from 'react';
 import {SudokuUtil, checkGoResult} from './sudokuutil';
 import Board from './board';
 import Numbers from './numbers';
+import Button from './button';
 
 class Sudoku extends React.Component {
     constructor(props){
         super(props);
 
-        this.game="400508100200009005075060900000800091109007500730000400820604310013702050900003070";
+        //this.game="400508100200009005075060900000800091109007500730000400820604310013702050900003070";
+        this.game = "390700000065821903204053760502000630000080074040605800800200400000004280400000009";
         this.state = {
             'currentNum': 1,
             'mode': 'play',
@@ -97,6 +99,20 @@ class Sudoku extends React.Component {
             'class': cssClass
         }
     }
+    solve(){
+        const util = new SudokuUtil(this.state.grid);
+        this.setState(
+            {
+                'currentNum': this.state.currentNum,
+                'mode': this.state.mode,
+                'lastClick': this.state.lastClick,
+                'grid': util.solve()
+            }
+        );            
+
+        alert('solve');
+    }
+
     render(){
         const currentNum = this.state.currentNum,
                 row = this.state.lastClick.row,
@@ -121,6 +137,8 @@ class Sudoku extends React.Component {
                     <b>{hint}</b>
                 </div>
                 <Numbers from="1" to="9" noneButton="Hint" onClick={num => this.numberClick(num)}/>
+                <br/>
+                <Button value="Solve" onClick={() => this.solve()}/>
             </div>
         )
     }

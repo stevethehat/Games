@@ -41,12 +41,10 @@ export class SudokuUtil {
     }  
     getColumn(col){
         // no need for the zeros
-        return this.grid.map((row, i) => row[col])
-                              .filter((cell) => cell !== 0);
+        return this.grid.map((row, i) => row[col]).filter((cell) => cell !== 0);
     }
     getRow(row){
-        return this.grid[row]
-                .filter((cell) => cell !== 0);
+        return this.grid[row].filter((cell) => cell !== 0);
     }
     getSector(row, col){
         var sectors = this.getSectors();
@@ -93,7 +91,35 @@ export class SudokuUtil {
         }
         return sectors;
     }  
-    
+    check(){
+
+    }
+    solve(){
+        while(this.fillKnownCells() > 0){
+            console.log('GOT THIS');
+            console.log(this.grid);
+        }
+        return this.grid;
+    }
+    fillKnownCells(){
+        var row, col, availableNums, found = 0;
+        for(row = 0;row < 9;row++){
+            for(col = 0;col < 9;col++){
+                if(this.grid[row][col] === 0){
+                    availableNums = this.getAvailableNums(row, col);
+                    //console.log(`${row} x ${col} - ${availableNums}`);
+                    if(availableNums.length === 1){
+                        found++;
+                        console.log(`${row} x ${col} - FIXED ${availableNums[0]}`);
+                        this.grid[row][col] = availableNums[0];
+                    }
+                }
+            }
+        }
+        return found
+    }
+
+
     static getInitialGrid(game){
         var grid = [], row, cells;
         if(game !== undefined){
@@ -118,5 +144,3 @@ export const checkGoResult = {
     sectorError: 3
 }
 
-//export default SudokuUtil;
-//export {SudokuUtil};
