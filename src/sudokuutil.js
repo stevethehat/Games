@@ -13,7 +13,7 @@ export class SudokuUtil {
                 .concat(this.getColumn(col))
                 .concat(this.getSector(row, col)));
         availableNums = [1,2,3,4,5,6,7,8,9].filter((num) => !nums.has(num));
-        console.log(`available nums for ${row} x ${col} = ${availableNums}`);
+        //console.log(`available nums for ${row} x ${col} = ${availableNums}`);
         
         return availableNums;
     }    
