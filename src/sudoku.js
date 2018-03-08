@@ -8,9 +8,6 @@ import Button from './button';
 class Sudoku extends React.Component {
     constructor(props){
         super(props);
-
-        //this.game="400508100200009005075060900000800091109007500730000400820604310013702050900003070";
-        this.game = "390700000065821903204053760502000630000080074040605800800200400000004280400000009";
         this.state = {
             'loaded': false,
             'gameNumber': Math.floor(Math.random() * 20),
@@ -21,7 +18,7 @@ class Sudoku extends React.Component {
     }
 
     componentDidMount(){
-        fetch('data/easy.json')
+        fetch('data/medium.json')
             .then(res => res.json())
             .then(
                 (result) => {
@@ -63,8 +60,6 @@ class Sudoku extends React.Component {
             }
             this.setState(
                 {
-                    'currentNum': this.state.currentNum,
-                    'mode': 'play',
                     'lastClick': lastClick,
                     'grid': grid
                 }
@@ -73,10 +68,7 @@ class Sudoku extends React.Component {
             legalNums = util.getAvailableNums(row, col);
             this.setState(
                 {
-                    'currentNum': this.state.currentNum,
-                    'mode': 'hint',
-                    'lastClick': lastClick,
-                    'grid': this.state.grid
+                    'lastClick': lastClick
                 }
             );            
         }
@@ -86,9 +78,7 @@ class Sudoku extends React.Component {
         this.setState(
             {
                 'currentNum': num,
-                'mode': mode,
-                'lastClick': this.state.lastClick,
-                'grid': this.state.grid
+                'mode': mode
             }
         )
     }
@@ -133,9 +123,6 @@ class Sudoku extends React.Component {
         const util = new SudokuUtil(this.state.grid);
         this.setState(
             {
-                'currentNum': this.state.currentNum,
-                'mode': this.state.mode,
-                'lastClick': this.state.lastClick,
                 'grid': util.solve()
             }
         );            
@@ -173,7 +160,7 @@ class Sudoku extends React.Component {
                 </div>
                 <Numbers from="1" to="9" noneButton="Hint" onClick={num => this.numberClick(num)}/>
                 <br/>
-                <Button value="Solve" onClick={() => this.solve()}/>
+                <Button avalue="Solve" onClick={() => this.solve()}>Solve</Button>
             </div>
         )
     }
