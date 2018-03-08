@@ -92,13 +92,30 @@ export class SudokuUtil {
         return sectors;
     }  
     check(){
-
+        const sectors = this.getSectors();
+        var i, check, total = 0;
+        for (i = 0;i < 9;i++){
+            check = this.getRow(i);
+            if(check.reduce((total, value) => total + value) !== 45){
+                return false;
+            }
+            check = this.getColumn(i);
+            if(check.reduce((total, value) => total + value) !== 45){
+                return false;
+            }
+            check = sectors[i];
+            if(check.reduce((total, value) => total + value) !== 45){
+                return false;
+            }
+        }
+        return true;
     }
     solve(){
         while(this.fillKnownCells() > 0){
             console.log('GOT THIS');
             console.log(this.grid);
         }
+        this.check();
         return this.grid;
     }
     fillKnownCells(){
