@@ -11,11 +11,11 @@ class Numbers extends React.Component {
         }
         const numbersJSX = numbers.map((value, i) => {
             return(
-                <Square key={value} value={value} onClick={() => this.props.onClick(value)}/>
+                <Square key={value} onClick={() => this.props.onClick(value)}>{value}</Square>
             )
         });
         return(
-            <div>{numbersJSX}<Square key="none" value={noneButton} onClick={() => this.props.onClick('none')}/></div>
+            <div>{numbersJSX}<Square key="none" onClick={() => this.props.onClick('none')}>{noneButton}</Square></div>
         )
     }
 }
