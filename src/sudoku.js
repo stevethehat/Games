@@ -12,11 +12,41 @@ class Sudoku extends React.Component {
         //this.game="400508100200009005075060900000800091109007500730000400820604310013702050900003070";
         this.game = "390700000065821903204053760502000630000080074040605800800200400000004280400000009";
         this.state = {
+            'loaded': false,
+            'gameNumber': Math.floor(Math.random() * 20),
             'currentNum': 1,
             'mode': 'play',
-            'lastClick': {'row': 0, 'col': 0, 'result': checkGoResult.none},
-            'grid': SudokuUtil.getInitialGrid(this.game)
+            'lastClick': {'row': 0, 'col': 0, 'result': checkGoResult.none}
         }
+    }
+
+    componentDidMount(){
+        fetch('data/easy.json')
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({
+                        'loaded': true,
+                        'grid': SudokuUtil.getInitialGrid(result.games[9])
+                    });
+                    /*
+                    this.setState({
+                    'loaded': true,
+                    'grid': SudokuUtil.getInitialGrid(result.games[this.state.gameNumber])
+                    });
+                    */
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                    debugger;
+                    this.setState({
+                        isLoaded: true,
+                        error
+                    });
+                }
+            )        
     }
     
     cellClick(row, col){
@@ -113,7 +143,12 @@ class Sudoku extends React.Component {
         alert('solve');
     }
 
-    render(){
+    renderLoading(){
+        return(
+            <div>Loading...</div>
+        )
+    }
+    renderGame(){
         const currentNum = this.state.currentNum,
                 row = this.state.lastClick.row,
                 col = this.state.lastClick.col,
@@ -127,7 +162,7 @@ class Sudoku extends React.Component {
         }
         return (
             <div className="sudoku">
-                <h1>Sudoku</h1>
+                <h1>Sudoku - Game {this.state.gameNumber +1}</h1>
                 <br/>
                 <Board rows="9" cols="9" getCellInfo={(row, col) => this.getCellInfo(row, col)} onClick={(row, col) => this.cellClick(row, col)}/>
                 <div className="current-number">
@@ -141,6 +176,14 @@ class Sudoku extends React.Component {
                 <Button value="Solve" onClick={() => this.solve()}/>
             </div>
         )
+    }
+
+    render(){
+        if(this.state.loaded){
+            return this.renderGame()
+        } else {
+            return this.renderLoading()
+        }
     }
 }
 
